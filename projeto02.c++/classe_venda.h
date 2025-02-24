@@ -25,16 +25,16 @@ public:
 	int getIdCliente();
 	int getIdProduto();
 	int getQuantidade();
-	int getPreco();
-	int getPrecoTotal();
-	int getIva();
+	float getPreco();
+	float getPrecoTotal();
+	float getIva();
 
 	void setNumFatura(int numfatura);
 	void setIdCliente(int idcliente);
 	void setIdProduto(int idproduto);
 	void setQuantidade(int quantidade);
-	void setPreco(int preco);
-	void setPrecoTotal(int precototal);
-	void setIva(int iva);
+	void setPreco(float preco);
+	void setPrecoTotal(float precototal);
+	void setIva(float iva); 
 
 };

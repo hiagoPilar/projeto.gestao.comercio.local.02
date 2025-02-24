@@ -67,3 +67,5 @@ void Cliente::setMorada(string morada)
 {
 	Morada = morada;
 }
+
+

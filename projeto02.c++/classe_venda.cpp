@@ -14,7 +14,7 @@ Venda::Venda()
 Venda::Venda(int NumFatura, int IdCLiente, int IdProduto, int Quantidade, float Preco, float PrecoTotal, float Iva)
 {
 	this->NumFatura = NumFatura;
-	this->IdCliente - IdCLiente;
+	this->IdCliente = IdCLiente;
 	this->IdProduto = IdProduto;
 	this->Quantidade = Quantidade;
 	this->Preco = Preco;
@@ -42,17 +42,17 @@ int Venda::getQuantidade()
 	return Quantidade;
 }
 
-int Venda::getPreco()
+float Venda::getPreco()
 {
 	return Preco;
 }
 
-int Venda::getPrecoTotal()
+float Venda::getPrecoTotal() 
 {
 	return PrecoTotal;
-}
+} 
 
-int Venda::getIva()
+float Venda::getIva()
 {
 	return Iva;
 }
@@ -77,17 +77,17 @@ void Venda::setQuantidade(int quantidade)
 	Quantidade = quantidade;
 }
 
-void Venda::setPreco(int preco)
+void Venda::setPreco(float preco)
 {
 	Preco = preco;
 }
 
-void Venda::setPrecoTotal(int precototal)
+void Venda::setPrecoTotal(float precototal)
 {
 	PrecoTotal = precototal;
 }
 
-void Venda::setIva(int iva)
+void Venda::setIva(float iva)
 {
 	Iva = iva;
 }

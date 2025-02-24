@@ -11,7 +11,7 @@ Produto::Produto()
 Produto::Produto(string Nome, int IdProduto, int Quantidade, float Preco)
 {
 	this->Nome = Nome;
-	this->IdProduto - IdProduto;
+	this->IdProduto = IdProduto;
 	this->Quantidade = Quantidade;
 	this->Preco = Preco;
 }
@@ -43,7 +43,7 @@ void Produto::setNome(string nome)
 
 void Produto::setIdProduto(int idproduto)
 {
-	IdProduto - idproduto;
+	IdProduto = idproduto;
 }
 
 void Produto::setQuantidade(int quantidade)
