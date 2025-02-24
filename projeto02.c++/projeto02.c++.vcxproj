@@ -127,11 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="class.cpp" />
+    <ClCompile Include="classe_cliente.cpp" />
+    <ClCompile Include="classe_loja.cpp" />
+    <ClCompile Include="classe_produto.cpp" />
+    <ClCompile Include="classe_venda.cpp" />
+    <ClCompile Include="functions.cpp" />
     <ClCompile Include="projeto02.c++.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="class.h" />
+    <ClInclude Include="classe_cliente.h" />
+    <ClInclude Include="classe_loja.h" />
+    <ClInclude Include="classe_produto.h" />
+    <ClInclude Include="classe_venda.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
