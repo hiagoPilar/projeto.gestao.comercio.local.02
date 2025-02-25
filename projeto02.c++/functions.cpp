@@ -134,9 +134,9 @@ void menuCLiente() {
 	do
 	{
 		cout << "______________________________________" << endl;
-		cout << "               MENU CLIENTE            " << endl;
+		cout << "             MENU CLIENTE             " << endl;
 		cout << "______________________________________" << endl;
-		cout << "Selecione a opcao para continuar: " << endl;
+		cout << "Selecione a opcao para continuar: "   << endl;
 		cout << "______________________________________" << endl;
 		cout << "           1 - Criar Cliente          " << endl;
 		cout << "          2 - Excluir Cliente         " << endl;
@@ -147,7 +147,7 @@ void menuCLiente() {
 		switch (sel4)
 		{
 		case 1:
-			//criar cliente
+			Loja::criarCliente();
 			break;
 		case 2:
 			//excluir cliente

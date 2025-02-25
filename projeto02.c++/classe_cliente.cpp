@@ -1,5 +1,7 @@
 #include "classe_cliente.h"
 
+using namespace std;
+
 Cliente::Cliente()
 {
 	Nome = "";
@@ -9,10 +11,10 @@ Cliente::Cliente()
 	Morada = "";
 }
 
-Cliente::Cliente(string Nome, int IdCliente, int Idade, int Telefone, string Morada)
+Cliente::Cliente(int IdCliente, string Nome, int Idade, int Telefone, string Morada)
 {
 	this->Nome = Nome;
-	this->IdCliente = IdCliente;
+	this->IdCliente = IdCliente; 
 	this->Idade = Idade; 
 	this->Telefone = Telefone; 
 	this->Morada = Morada; 
@@ -21,11 +23,6 @@ Cliente::Cliente(string Nome, int IdCliente, int Idade, int Telefone, string Mor
 string Cliente::getNome()
 {
 	return Nome;
-}
-
-int Cliente::getIdCliente()
-{
-	return IdCliente;
 }
 
 int Cliente::getIdade()
@@ -43,14 +40,14 @@ string Cliente::getMorada()
 	return Morada;
 }
 
+int Cliente::getIdCliente()
+{
+	return IdCliente; 
+}
+
 void Cliente::setNome(string nome)
 {
 	Nome = nome;
-}
-
-void Cliente::setIdCliente(int idcliente)
-{
-	IdCliente = idcliente;
 }
 
 void Cliente::setIdade(int idade)
@@ -66,6 +63,11 @@ void Cliente::setTelefone(int telefone)
 void Cliente::setMorada(string morada)
 {
 	Morada = morada;
+}
+
+void Cliente::setIdCliente(int idcliente)
+{
+	IdCliente = idcliente; 
 }
 
 

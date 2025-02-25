@@ -2,34 +2,33 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class Cliente {
 private:
 	string Nome;
-	int IdCliente;
 	int Idade;
+	int IdCliente;
 	int Telefone;
 	string Morada;
 
 public:
 
 	Cliente();
-	Cliente(string Nome, int IdCliente, int Idade, int Telefone, string Morada);
+	Cliente(int IdCliente, string Nome, int Idade, int Telefone, string Morada); 
 
 	string getNome();
-	int getIdCliente();
 	int getIdade();
 	int getTelefone();
 	string getMorada();
+	int getIdCliente();
 
 	void setNome(string nome);
-	void setIdCliente(int idcliente);
 	void setIdade(int idade);
 	void setTelefone(int telefone);
-	void setMorada(string morada); 
-
-	
+	void setMorada(string morada);  
+	void setIdCliente(int idcliente); 
 
 }; 

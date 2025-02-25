@@ -2,29 +2,25 @@
 #include<iostream>
 #include<string>
 #include "classe_cliente.h"
-#include "classe_produto.h";
+#include "classe_produto.h"
+#include "classe_venda.h"
 
 using namespace std;
 
 class Loja {
 private:
-	string Nome;
-	int IdLoja;
-	string Morada;
-	Cliente cliente[100];
-	Produto produtos[100];
+	//vetores dinâmicos
+	vector<Cliente> vecClientes;
+	vector<Produto> vecProdutos;
+	vector<Venda> vecVendas;
 
 public:
 
-	Loja();
-	Loja(string Nome, int IdLoja, string Morada);
+	Loja(); 
 
-	string getNome();
-	int getIdLoja();
-	string getMorada();
 
-	void setNome(string nome);
-	void setIdLoja(int idloja);
-	void setMorada(string morada); 
-
+	//cliente
+	void criarCliente(int idcliente, string nome, int idade, int telefone, string morada); 
+	void excluirCliente(int totalclientes);
+	void alterarNome(int totalclientes);
 };

@@ -1,45 +1,82 @@
 #include "classe_loja.h"
+#include "classe_cliente.h"
+
+
 
 Loja::Loja()
 {
-	Nome = "";
-	IdLoja = 0;
-	Morada = "";
+
 }
 
-Loja::Loja(string Nome, int IdLoja, string Morada)
+
+//clientes
+
+void Loja::criarCliente(int idcliente, string nome, int idade, int telefone, string morada)   
 {
-	this->Nome = Nome;
-	this->IdLoja = IdLoja;
-	this->Morada = Morada;
+	string cond;
+	bool continuar = false;
+	do
+	{
+		cout << "________________________________________" << endl;
+		cout << "        Adicionar Novo Cliente          " << endl;
+		cout << "________________________________________" << endl;
+		cout << "Nome do cliente: ";
+		cin >> nome;
+		cout << "Idade: ";
+		cin >> idade;
+		cout << "Telefone: ";
+		cin >> telefone;
+		cout << "Morada: ";
+		cin >> morada;
+		//atualiza o id cliente conforme o tamanho do vetor
+		idcliente = vecClientes.size(); 
+
+		cout << "Os dados estão corretos?" << endl;
+		cout << idcliente << "|" << nome << "|" << idade << "|" << telefone << "|" << morada << endl;
+		cout << "S ou N?";
+		cin >> cond; 
+		
+		if (cond == "S") {
+			continuar = true;
+		}
+		else {
+			cout << "Por favor, insira os dados novamente." << endl;
+		}
+	} while (continuar == false);
+
+
+	//novo objeto cliente
+	Cliente novoCliente(idcliente, nome, idade, telefone, morada);  
+
+	//add o novo cliente ao vetor clientes
+	vecClientes.push_back(novoCliente); 
+
+	cout << endl;
+	cout << "_______________________________" << endl;
+	cout << "Cliente adicionado com sucesso!";
+	cout << "_______________________________" << endl;  
+	cout << endl;
 }
 
-string Loja::getNome()
+void Loja::excluirCliente(int idcliente)
 {
-	return Nome;
+	int idexcluir;
+	bool continuar = false;
+	do
+	{
+		cout << "________________________________________" << endl;
+		cout << "             Excluir Cliente            " << endl;
+		cout << "________________________________________" << endl;
+		cout << "Digite o ID do cliente que deseja excluir: ";
+		cin >> idexcluir;
+		cout << "________________________________________" << endl;
+
+	} while (continuar == false);
+
 }
 
-int Loja::getIdLoja()
+void Loja::alterarNome(int idcliente) 
 {
-	return IdLoja;
-}
 
-string Loja::getMorada()
-{
-	return Morada;
-}
 
-void Loja::setNome(string nome)
-{
-	Nome = nome;
-}
-
-void Loja::setIdLoja(int idloja)
-{
-	IdLoja = idloja;
-}
-
-void Loja::setMorada(string morada)
-{
-	Morada = morada;
 }
