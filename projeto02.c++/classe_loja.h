@@ -9,18 +9,21 @@ using namespace std;
 
 class Loja {
 private:
-	//vetores dinâmicos
-	vector<Cliente> vecClientes;
-	vector<Produto> vecProdutos;
-	vector<Venda> vecVendas;
+	
+	Produto vecProduto[100];
+	Venda vecVenda[100];
+	Cliente vecCliente[100];
+	int capacidade;
+	int totalClientes;
 
 public:
 
-	Loja(); 
-
+	Loja(int capacidade = 100);  
+	
 
 	//cliente
-	void criarCliente(int idcliente, string nome, int idade, int telefone, string morada); 
-	void excluirCliente(int totalclientes);
-	void alterarNome(int totalclientes);
+	void clientesIniciais();  
+	void criarCliente(); 
+	void excluirCliente();
+	void alterarNome();
 };

@@ -8,11 +8,11 @@ using namespace std;
 
 class Cliente {
 private:
+	int IdCliente; 
 	string Nome;
 	int Idade;
-	int IdCliente;
 	int Telefone;
-	string Morada;
+	string Morada; 
 
 public:
 
