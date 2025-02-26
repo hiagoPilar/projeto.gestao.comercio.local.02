@@ -20,6 +20,10 @@ public:
 
 	Loja(int capacidade = 100);  
 	
+	//verificações
+	bool ehNumero(string& str); 
+	bool ehTexto(const string& str); 
+
 
 	//cliente
 	void clientesIniciais();  

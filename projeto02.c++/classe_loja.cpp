@@ -12,6 +12,34 @@ Loja::Loja(int capacidade)
 }
 
 
+
+//verificações
+
+bool Loja::ehNumero(string& str)
+{
+	for(char const& c : str) //ciclo para percorrer cada caractere da string str
+	{
+		if (!isdigit(c)) { //verifica se o caractere atual nao é um digito  
+			return false;
+		}
+	}
+	return true;
+}
+
+bool Loja::ehTexto(const string& str)
+{
+	for (char const& c : str)
+	{
+		if (!isalpha(c) && c != ' ') { //verifica se o caractere é uma letra ou espaço
+			return false;
+		}
+	}
+	return true;
+}
+
+
+
+
 //clientes
 
 void Loja::clientesIniciais()
@@ -23,13 +51,11 @@ void Loja::clientesIniciais()
 	totalClientes = 4;
 }
 
-//PRECISA ARRUMAR AS ENTRADAS DE TEXTOS E NUMEROS PARA NAO DAR ERRO DE LOOP INFINITO QUANDO DIGITAR ALGO ERRADO
-
 
 void Loja::criarCliente()  
 {
 	int idcliente, idade, telefone; 
-	string cond, nome, morada; 
+	string nome, morada; 
 	bool continuar = false; 
 
 	if (totalClientes >= capacidade)        
@@ -40,53 +66,94 @@ void Loja::criarCliente()
 
 	do
 	{
-		
 		system("cls"); 
 		cout << "----------------------------------------" << endl;
 		cout << "        Adicionar Novo Cliente          " << endl;
 		cout << "________________________________________" << endl;
+
 		cout << "Nome do cliente: "; 
 		cin.ignore(); 
-		getline(cin, nome); 
+		getline(cin, nome);
+		if (!ehTexto(nome)) {
+			cout << "Nome deve conter somente letras, digite novamente: ";
+			cin >> nome;
+		}
+
 		cout << "Idade: ";
-		cin.ignore();
-		cin >> idade;  
+		cin >> idade;
+		while (!(cin >> idade)) //verifica se a entrada é válida
+		{
+			cin.clear(); //limpa o estado de erro do cin
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ignora a entrada invalida
+			cout << "Entrada invalida! Digite um número para a idade: ";
+		}
+		if (!ehNumero(idade)) { 
+			cout << "Idade deve conter somente números, digite novamente: ";
+			cin >> idade;  
+		}
+
 		cout << "Telefone: ";
-		cin >> telefone; 
+		while (!(cin >> telefone))
+		{
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Entrada inválida! Digite um número para o telefone: ";
+		}
+
 		cout << "Morada: ";
 		cin.ignore(); 
 		getline(cin, morada);
 		
-		totalClientes++;
-		idcliente = totalClientes;  
+		idcliente = totalClientes + 1;   
 
-		vecCliente[totalClientes] = Cliente(idcliente, nome, idade, telefone, morada);
+		vecCliente[totalClientes] = Cliente(idcliente, nome, idade, telefone, morada); 
+		totalClientes++;
 		
+		string opcao;   
 		cout << "Os dados estão corretos?" << endl;
-		cout << idcliente << "|" << nome << "|" << idade << "|" << telefone << "|" << morada << endl;
+		cout << idcliente << " | " << nome << " | " << idade << " | " << telefone << " | " << morada << endl;
 		cout << "S ou N?";
-		cin >> cond; 
+		cin >> opcao;   
 		
-		if (cond == "S") {
+		 
+		if (opcao == "s") {  
 			continuar = true;
 		}
-		else {
+		else {  
 			cout << "Por favor, insira os dados novamente." << endl;
+			break; 
+		} 
+
+		cout << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Cliente adicionado com sucesso!";
+		cout << "_______________________________" << endl;
+		cout << endl;
+
+		cout << "Deseja adicionar outro cliente? (S) ou (N)" << endl;
+		cin >> opcao;
+		if (opcao == "s") {
+			continuar = false;
 		}
+		else {
+			continuar = true;
+		} 
 
 	} while (continuar == false);
 
-	cout << endl;
-	cout << "-------------------------------" << endl;
-	cout << "Cliente adicionado com sucesso!";
-	cout << "_______________________________" << endl;  
-	cout << endl;
 }
 
 void Loja::excluirCliente()
 {
 	int idexcluir; 
+	string opcao;  
 	bool continuar = false;
+
+	if (totalClientes == 0) {
+		cout << "Nenhum cliente cadastrado!" << endl;
+		return;  
+	}
+
 	system("cls");
 	cout << "----------------------------------------" << endl;
 	cout << "             Excluir Cliente            " << endl;
@@ -113,25 +180,30 @@ void Loja::excluirCliente()
 			if (vecCliente[i].getIdCliente() == idexcluir) 
 			{
 				continuar = true;
-				//remover o id do vetor
-				for (int j = i; j < totalClientes -1 ; j++)
-				{
-					vecCliente[j] = vecCliente[j + 1]; 
-				} 
-				totalClientes--; 
+				cout << "Tem certeza que deseja excluir o cliente com ID " << vecCliente[i].getIdCliente() << endl; 
+				cout << "s | n = ";
+				cin >> opcao; 
+				if (opcao == "s") { 
+					//remover o id do vetor 
+					for (int k = i; k < totalClientes - 1; k++)  
+					{
+						vecCliente[k] = vecCliente[k + 1]; 
+					}
+					totalClientes--; 
 
-				cout << "Cliente com ID " << idexcluir << " excluído com sucesso!" << endl;
+					cout << "Cliente com ID " << idexcluir << " excluído com sucesso!" << endl;
+				} 
 			}
 		}
-		string opcao;
+		
 		cout << "-------------------------------------------" << endl; 
-		cout << "Deseja exluir outro cliente? (S) ou (N)" << endl;
+		cout << "Deseja excluir outro cliente? (S) ou (N)" << endl;
 		cin >> opcao;
 		if (opcao == "S") {
 			continuar = false;
 		}
 		else { 
-			continuar = true;   
+			return; 
 		}
 
 	} while (continuar == false);
@@ -178,13 +250,23 @@ void Loja::alterarNome()
 				getline(cin, novoNome); 
 				//alterar nome do cliente
 				vecCliente[i].setNome(novoNome); 
-				continuar = true;
 				cout << "Nome do cliente com ID " << idAlterar << " alterado com sucesso!" << endl;
+				continuar = true; 
 				break;
 			}
 		}
 		if (!continuar) { 
 			cout << "Cliente com o ID " << idAlterar << " não encontrado!" << endl; 
+		}
+		string opcao; 
+		cout << "----------------------------------------" << endl;
+		cout << "Deseja alterar outro cliente? (S) ou (N)" << endl;
+		cin >> opcao;
+		if (opcao == "s") {
+			continuar = false; 
+		}
+		else {
+			continuar = true; 
 		}
 
 	} while (false);
