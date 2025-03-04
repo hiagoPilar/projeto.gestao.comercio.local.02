@@ -10,22 +10,25 @@ class Produto {
 private:
 	string Nome;
 	int IdProduto;
-	float Preco;
-	int Quantidade;
+	float Preco, precoFinal;  
+	int Quantidade; 
+
 
 public:
 
 	Produto();
-	Produto(string Nome, int IdProduto, int Quantidade, float Preco);
+	Produto(int IdProduto, string Nome, int Quantidade, float Preco, float precoFinal);  
 
 	string getNome();
 	int getIdProduto();
 	int getQuantidade();
 	float getPreco();
+	float getPrecoFinal(); 
 
 	void setNome(string nome);
 	void setIdProduto(int idproduto);
 	void setQuantidade(int quantidade);
 	void setPreco(float preco);
+	void setPrecoFinal(float precoFinal); 
 
 };

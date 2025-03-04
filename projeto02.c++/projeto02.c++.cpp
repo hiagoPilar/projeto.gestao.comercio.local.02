@@ -12,13 +12,14 @@ void menuStock(Loja& loja) {
 	int sel2;
 	do
 	{
+		system("cls"); 
 		cout << "______________________________________" << endl;
 		cout << "               MENU STOCK             " << endl;
 		cout << "______________________________________" << endl;
-		cout << "Selecione a opcao para continuar: " << endl;
+		cout << "Selecione a opcao para continuar: "     << endl;
 		cout << "______________________________________" << endl;
 		cout << "        1 - Criação de Produto        " << endl;
-		cout << "     2 - Adicionar Produto Existente  " << endl;
+		cout << "     2 - Atualizar Produto Existente  " << endl;
 		cout << "          3 - Excluir Produto         " << endl;
 		cout << "              4 - Voltar              " << endl;
 		cout << "______________________________________" << endl;
@@ -26,10 +27,10 @@ void menuStock(Loja& loja) {
 		switch (sel2)
 		{
 		case 1:
-			//criacao produto
+			loja.criarProduto();  
 			break;
 		case 2:
-			//add produto existente
+			loja.atualizarProduto(); 
 			break;
 		case 3:
 			//exlcuir produto
@@ -64,7 +65,7 @@ void menuRelatorio(Loja& loja) {
 		switch (sel3)
 		{
 		case 1:
-			//relatorio stock
+			loja.mostrarStock(); 
 			break;
 		case 2:
 			//vendas por produto
@@ -126,10 +127,11 @@ void menuPrincipal(Loja& loja) {
 	int sel1;
 	do
 	{
+		system("cls"); 
 		cout << "______________________________________" << endl;
 		cout << "           MENU PRINCIPAL             " << endl;
 		cout << "______________________________________" << endl;
-		cout << "Selecione a opcao para continuar: " << endl;
+		cout << "Selecione a opcao para continuar: "     << endl;
 		cout << "______________________________________" << endl;
 		cout << "             1 - Vendas               " << endl;
 		cout << "             2 - Stock                " << endl;
@@ -141,7 +143,7 @@ void menuPrincipal(Loja& loja) {
 		switch (sel1)
 		{
 		case 1:
-			//efetuarVenda();   
+			loja.efetuarVenda();   
 			break;
 		case 2:
 			menuStock(loja); 

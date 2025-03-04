@@ -6,14 +6,16 @@ Produto::Produto()
 	IdProduto = 0;
 	Quantidade = 0;
 	Preco = 0.0;
+	precoFinal = 0.0;
 }
 
-Produto::Produto(string Nome, int IdProduto, int Quantidade, float Preco)
+Produto::Produto(int IdProduto, string Nome, int Quantidade, float Preco, float precoFinal) 
 {
 	this->Nome = Nome;
 	this->IdProduto = IdProduto;
 	this->Quantidade = Quantidade;
 	this->Preco = Preco;
+	this->precoFinal = precoFinal;   
 }
 
 string Produto::getNome()
@@ -36,6 +38,11 @@ float Produto::getPreco()
 	return Preco;
 }
 
+float Produto::getPrecoFinal() 
+{
+	return precoFinal;   
+}
+
 void Produto::setNome(string nome)
 {
 	Nome = nome;
@@ -54,4 +61,9 @@ void Produto::setQuantidade(int quantidade)
 void Produto::setPreco(float preco)
 {
 	Preco = preco;
+}
+
+void Produto::setPrecoFinal(float precoFinal)
+{
+	precoFinal = precoFinal;  
 }

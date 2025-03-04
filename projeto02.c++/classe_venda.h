@@ -37,4 +37,5 @@ public:
 	void setPrecoTotal(float precototal);
 	void setIva(float iva); 
 
+
 };

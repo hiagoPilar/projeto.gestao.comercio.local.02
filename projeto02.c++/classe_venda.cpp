@@ -69,7 +69,7 @@ void Venda::setIdCliente(int idcliente)
 
 void Venda::setIdProduto(int idproduto)
 {
-	IdProduto - idproduto;
+	IdProduto = idproduto;
 }
 
 void Venda::setQuantidade(int quantidade)

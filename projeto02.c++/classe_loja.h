@@ -4,6 +4,9 @@
 #include "classe_cliente.h"
 #include "classe_produto.h"
 #include "classe_venda.h"
+#include <limits> 
+#include <iomanip> 
+
 
 using namespace std;
 
@@ -13,8 +16,11 @@ private:
 	Produto vecProduto[100];
 	Venda vecVenda[100];
 	Cliente vecCliente[100];
-	int capacidade;
-	int totalClientes;
+	int capacidade, totalClientes, totalProdutos, linhaMatriz;   
+	float matrizVenda[100][3];  //armazena dados no registro de produtos para chamar no talao
+	string vecNomeProduto[100]; //armazena nome do prod para chamar no talao
+	
+
 
 public:
 
@@ -23,6 +29,8 @@ public:
 	//verificações
 	bool ehNumero(string& str); 
 	bool ehTexto(const string& str); 
+	bool ehFloat(const string& str); 
+	char ehSimNao(); 
 
 
 	//cliente
@@ -30,4 +38,21 @@ public:
 	void criarCliente(); 
 	void excluirCliente();
 	void alterarNome();
+
+	//produto
+	void stockInicial();
+	void mostrarStock();
+	void criarProduto();
+	void atualizarProduto(); 
+	/*void excluirProduto();
+	*/  
+
+	
+	//venda
+	void registrarProdutos(); 
+	void checkout();
+	void efetuarVenda();
+
+	
+
 };
