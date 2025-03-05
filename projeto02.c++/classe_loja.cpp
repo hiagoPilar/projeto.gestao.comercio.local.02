@@ -359,7 +359,6 @@ void Loja::alterarNome()
 
 
 
-
 //produtos
 
 void Loja::stockInicial()
@@ -381,7 +380,6 @@ void Loja::mostrarStock()
 	cout << "--------------------------------------------------------------------------------" << endl;
 	cout << "                                     STOCK                                      " << endl;
 	cout << "--------------------------------------------------------------------------------" << endl;
-	cout << totalProdutos; 
 	for (int i = 0; i < totalProdutos; i++) 
 	{
 		cout << "ID: " << vecProduto[i].getIdProduto() << " | Nome: " << vecProduto[i].getNome() << " | Quantidade: " << vecProduto[i].getQuantidade() << " | Preço: " << fixed << setprecision(2) << vecProduto[i].getPreco() << " | Preço Venda: " << fixed << setprecision(2) << vecProduto[i].getPrecoFinal() << endl; 
@@ -490,7 +488,7 @@ void Loja::atualizarProduto()
 		cout << "Digite o ID do produto que deseja atualizar (ou 'sair' para voltar ao Menu Principal): ";
 		cin >> idprodutoStr; 
 		if (idprodutoStr == "sair") {
-			return;
+			return; 
 		}
 		while (!ehNumero(idprodutoStr)) {
 			cout << "Entrada inválida! Digite um número para ID do produto: "; 
@@ -542,12 +540,75 @@ void Loja::atualizarProduto()
 	system("cls"); 
 
 }
+
+void Loja::excluirProduto()
+{
+	string idprodutoStr;
+	int idproduto;
+	bool continuar = false; 
+	
+	
+
+	do
+	{
+		system("cls"); 
+		cout << endl; 
+		cout << endl; 
+		cout << "--------------------------------------------------------------------------------" << endl;
+		cout << "                            EXCLUIR PRODUTO DO STOCK                            " << endl;
+		cout << "--------------------------------------------------------------------------------" << endl;
+		cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+		mostrarStock(); 
+		cout << endl;
+		cout << "Digite o ID do produto que deseja excluir (ou 'sair' para voltar ao Menu Principal): ";
+		cin >> idprodutoStr;   
+		if (idprodutoStr == "sair") {  
+			return;
+		}
+		while (!ehNumero(idprodutoStr)) { 
+			cout << "Entrada inválida! Digite um número para ID do produto: ";
+			cin >> idprodutoStr; 
+		}
+		idproduto = stoi(idprodutoStr); 
+
+		for (int i = 0; i < totalProdutos; i++)
+		{
+			continuar = true;
+			if (vecProduto[i].getIdProduto() == idproduto) {
+
+				for (int j = i; j < totalProdutos - 1; j++)
+				{
+					vecProduto[j] = vecProduto[j + 1]; 
+					
+				}
+				cout << "-----------------------------" << endl;
+				cout << "Produto excluído com sucesso!" << endl;
+				cout << "-----------------------------" << endl;
+				totalProdutos--;  
+				break; 
+			}
+			
+		}
+
+		if (!continuar) { 
+			cout << ">>> ID não encontrado! <<<" << endl; 
+		}
+
+		cout << "Deseja excluir outro produto?" << endl; 
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+		char resposta = ehSimNao();  
+		if (resposta == 'N') {
+			return; 
+		}
+		continuar = false; 
+
+
+	} while (true);
+}
  
 
 
-
-
-//venda
+//vendas
 
 void Loja::registrarProdutos()
 {

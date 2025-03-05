@@ -33,7 +33,7 @@ void menuStock(Loja& loja) {
 			loja.atualizarProduto(); 
 			break;
 		case 3:
-			//exlcuir produto
+			loja.excluirProduto(); 
 			break;
 		case 4:
 			cout << "Saindo..." << endl;

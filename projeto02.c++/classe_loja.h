@@ -6,6 +6,7 @@
 #include "classe_venda.h"
 #include <limits> 
 #include <iomanip> 
+#include <ctime> 
 
 
 using namespace std;
@@ -44,8 +45,8 @@ public:
 	void mostrarStock();
 	void criarProduto();
 	void atualizarProduto(); 
-	/*void excluirProduto();
-	*/  
+	void excluirProduto();
+	  
 
 	
 	//venda
