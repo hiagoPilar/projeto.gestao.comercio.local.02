@@ -5,17 +5,19 @@ Venda::Venda()
 	NumFatura = 0;
 	IdCliente = 0;
 	IdProduto = 0;
+	NomeProduto = "";
 	Quantidade = 0;
 	Preco = 0.0;
 	PrecoTotal = 0.0;
 	Iva = 0.0;
 }
 
-Venda::Venda(int NumFatura, int IdCLiente, int IdProduto, int Quantidade, float Preco, float PrecoTotal, float Iva)
+Venda::Venda(int NumFatura, int IdCLiente, int IdProduto, string NomeProduto, int Quantidade, float Preco, float PrecoTotal, float Iva)
 {
 	this->NumFatura = NumFatura;
 	this->IdCliente = IdCLiente;
 	this->IdProduto = IdProduto;
+	this->NomeProduto = NomeProduto;  
 	this->Quantidade = Quantidade;
 	this->Preco = Preco;
 	this->PrecoTotal = PrecoTotal;
@@ -35,6 +37,11 @@ int Venda::getIdCliente()
 int Venda::getIdProduto()
 {
 	return IdProduto;
+}
+
+string Venda::getNomeProduto()
+{
+	return NomeProduto; 
 }
 
 int Venda::getQuantidade()
@@ -70,6 +77,11 @@ void Venda::setIdCliente(int idcliente)
 void Venda::setIdProduto(int idproduto)
 {
 	IdProduto = idproduto;
+}
+
+void Venda::setNomeProduto(string nomeproduto)
+{
+	NomeProduto = nomeproduto; 
 }
 
 void Venda::setQuantidade(int quantidade)

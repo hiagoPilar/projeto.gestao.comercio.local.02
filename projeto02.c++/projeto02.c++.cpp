@@ -51,6 +51,7 @@ void menuRelatorio(Loja& loja) {
 	int sel3;
 	do
 	{
+		system("cls"); 
 		cout << "______________________________________" << endl;
 		cout << "           MENU RELATÓRIO             " << endl;
 		cout << "______________________________________" << endl;
@@ -65,10 +66,10 @@ void menuRelatorio(Loja& loja) {
 		switch (sel3)
 		{
 		case 1:
-			loja.mostrarStock(); 
+			loja.relatorioStock(); 
 			break;
 		case 2:
-			//vendas por produto
+			loja.relatorioVendasProduto();  
 			break;
 		case 3:
 			//total vendas
@@ -143,7 +144,7 @@ void menuPrincipal(Loja& loja) {
 		switch (sel1)
 		{
 		case 1:
-			loja.efetuarVenda();   
+			loja.efetuarVenda();     
 			break;
 		case 2:
 			menuStock(loja); 
@@ -169,7 +170,7 @@ void menuPrincipal(Loja& loja) {
 
 int main()  
 {
-    setlocale(LC_ALL, "portuguese");
+    setlocale(LC_ALL, "portuguese");   
 
     Loja loja;  
     

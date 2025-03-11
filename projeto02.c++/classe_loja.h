@@ -7,20 +7,18 @@
 #include <limits> 
 #include <iomanip> 
 #include <ctime> 
+#include <algorithm>
+
 
 
 using namespace std;
 
 class Loja {
 private:
-	
 	Produto vecProduto[100];
 	Venda vecVenda[100];
 	Cliente vecCliente[100];
-	int capacidade, totalClientes, totalProdutos, linhaMatriz;   
-	float matrizVenda[100][3];  //armazena dados no registro de produtos para chamar no talao
-	string vecNomeProduto[100]; //armazena nome do prod para chamar no talao
-	
+	int totalClientes, totalProdutos, totalVendas, numFatura;        
 
 
 public:
@@ -32,6 +30,8 @@ public:
 	bool ehTexto(const string& str); 
 	bool ehFloat(const string& str); 
 	char ehSimNao(); 
+	string removerEspacosExtras(string str);   
+	void transformarParaMinusculo(string& str);  
 
 
 	//cliente
@@ -46,13 +46,14 @@ public:
 	void criarProduto();
 	void atualizarProduto(); 
 	void excluirProduto();
-	  
-
 	
 	//venda
-	void registrarProdutos(); 
-	void checkout();
-	void efetuarVenda();
+	void efetuarVenda();  
+
+	//relatório
+	void relatorioStock(); 
+	void relatorioVendasProduto();       
+
 
 	
 
