@@ -150,11 +150,11 @@ void Loja::mostrarClientes()
 
 void Loja::criarCliente()  
 {
-	int idcliente, idade, telefone, capacidade = 0;      
-	string nome, morada, opcao, idadeStr, telefoneStr;  
-	bool continuar = false; 
+	int idcliente, idade, telefone;      
+	string nome, morada, idadeStr, telefoneStr; 
+	bool continuar = false;
 
-	if (totalClientes >= capacidade)         
+	if (totalClientes >= 100)    
 	{ 
 		cout << "Limite de clientes atingido. Não é possível adicionar mais clientes." << endl;
 		return; 
@@ -169,7 +169,7 @@ void Loja::criarCliente()
 
 		do
 		{
-			cout << "Nome do cliente (ou 'sair' para voltar ao Menu Cliente): ";
+			cout << "Nome do cliente (ou 'sair' para voltar): ";
 			cin.ignore();
 			getline(cin, nome);
 			while (!ehTexto(nome)) {
@@ -197,8 +197,7 @@ void Loja::criarCliente()
 			telefone = stoi(telefoneStr);
 
 			cout << "Morada: ";
-			cin.ignore();
-			getline(cin, morada);
+			getline(cin, morada); 
 
 			idcliente = totalClientes + 1; 
 
@@ -208,14 +207,14 @@ void Loja::criarCliente()
 			
 			cout << "Os dados estão corretos?" << endl;
 			cout << idcliente << " | " << nome << " | " << idade << " | " << telefone << " | " << morada << endl;
-			cin.ignore();
 			char resposta = ehSimNao();
 
-			if (opcao == "s") {
-				continuar = true;
+			if (resposta == 'S') {
+				continuar = true; 
 			}
-			else if (opcao == "n") {
-				cout << endl;
+			else if (resposta == 'N') {
+				continuar = false;  
+				totalClientes--; 
 				cout << "Por favor, insira os dados novamente." << endl;
 				cout << endl; 
 			}
@@ -225,21 +224,21 @@ void Loja::criarCliente()
 
 		cout << endl;
 		cout << "-------------------------------" << endl;
-		cout << "Cliente adicionado com sucesso!";
+		cout << "Cliente adicionado com sucesso!" << endl; 
 		cout << "_______________________________" << endl;
 		cout << endl;
 
 		cout << "Deseja adicionar outro cliente? " << endl;
 		cin.ignore();
 		char resposta = ehSimNao();
-		if (opcao == "s") {
+		if (resposta == 'S') {
 			continuar = false;
 		}
-		else if (opcao == "n") {
-			continuar = true;
+		else if (resposta == 'N') {
+			 continuar = true; 
 		}  
 
-	} while (continuar == false);
+	} while (!continuar);
 
 }
 
@@ -726,12 +725,58 @@ bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 
 void Loja::registrarVenda(int idProdBuscar, int qtdVenda)
 {
-	
+	cout << "---------------------------------------------------" << endl;
+	cout << "Deseja registrar um novo cliente?" << endl; 
+	char resposta = ehSimNao();
+	if (resposta == 'S') {
+		criarCliente();
+	}
+	else if (resposta == 'N') {
+		
+		cout << "---------------------------------------------------" << endl;  
+		cout << "Deseja adicionar automaticamente o ID do cliente? ";
+		resposta = ehSimNao();
+		if (resposta == 'S') {
+			totalClientes++;
+			cout << "---------------------------------------------------" << endl;
+			cout << "Cliente com ID " << totalClientes << "adicionado a venda!" << endl;
+		}
+	}
 
 
+	for (int i = 0; i < totalProdutos; i++)
+	{
+		if (vecProduto[i].getIdProduto() == idProdBuscar) {
+
+			float iva = vecProduto[i].getPrecoFinal() * 0.23;  
+			
+			cout << endl;
+			cout << "-------------------------------------------" << endl; 
+			cout << "Os dados estão corretos?" << endl;
+			cout << "ID Produto: " << idProdBuscar << " | Nome: " << vecProduto[i].getNome() << " | Quantidade: " << qtdVenda << " | Preço Unitário: " << vecProduto[i].getPreco() << " | Preço Final: " << vecProduto[i].getPrecoFinal() << " | IVA: " << iva << endl; 
+			resposta = ehSimNao();
+			if (resposta == 'S') {
+
+				//atualiza qtd no stock
+				int qtdAtual = vecProduto[i].getQuantidade() - qtdVenda;
+				vecProduto[i].setQuantidade(qtdAtual); 
+
+
+				if (totalVendas < 100) {
+					vecVenda[totalVendas] = Venda(numFatura, totalClientes, vecProduto[i].getIdProduto(), vecProduto[i].getNome(), vecProduto[i].getQuantidade(), vecProduto[i].getPreco(), vecProduto[i].getPrecoFinal(), iva); 
+				}
+
+			}
+			else if (resposta == 'N') {
+				totalClientes--;
+				selecionarProduto(idProdBuscar, qtdVenda);   
+			}
+			
+		}
+	}
 
 	cout << "Deseja registrar outro produto? ";
-	char resposta = ehSimNao();
+	resposta = ehSimNao();
 	if (resposta == 'S') {
 		selecionarProduto(idProdBuscar, qtdVenda);
 	}
@@ -754,6 +799,8 @@ void Loja::efetuarVenda() {
 		cout << "Erro ao selecionar produto!" << endl;
 		return; 
 	}
+
+	registrarVenda(idProdBuscar, qtdVenda);
 	 
 
 }

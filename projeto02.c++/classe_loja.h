@@ -11,7 +11,7 @@
 #include <unordered_map> //para tabelas de hash
 #include <cstdlib> // para funcoes utilitarias (rand)
 
-using namespace std;
+using namespace std; 
 
 class Loja {
 private:
