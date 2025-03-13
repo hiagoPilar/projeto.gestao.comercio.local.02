@@ -72,7 +72,7 @@ void menuRelatorio(Loja& loja) {
 			loja.relatorioVendasProduto();  
 			break;
 		case 3:
-			//total vendas
+			loja.relatorioTotal(); 
 			break;
 		case 4:
 			cout << "Saindo..." << endl;

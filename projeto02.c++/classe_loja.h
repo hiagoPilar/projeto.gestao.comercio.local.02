@@ -4,12 +4,12 @@
 #include "classe_cliente.h"
 #include "classe_produto.h"
 #include "classe_venda.h"
-#include <limits> 
-#include <iomanip> 
-#include <ctime> 
-#include <algorithm>
-
-
+#include <limits> //para limites de tipos de dados
+#include <iomanip> //para formatar saidas (setprecision)
+#include <ctime> //para data e hora 
+#include <algorithm> //para operacoes 
+#include <unordered_map> //para tabelas de hash
+#include <cstdlib> // para funcoes utilitarias (rand)
 
 using namespace std;
 
@@ -33,9 +33,13 @@ public:
 	string removerEspacosExtras(string str);   
 	void transformarParaMinusculo(string& str);  
 
+	//extras
+	void dataHora(); 
+	bool sorteio(); 
 
 	//cliente
-	void clientesIniciais();  
+	void clientesIniciais();   
+	void mostrarClientes(); 
 	void criarCliente(); 
 	void excluirCliente();
 	void alterarNome();
@@ -52,7 +56,8 @@ public:
 
 	//relatório
 	void relatorioStock(); 
-	void relatorioVendasProduto();       
+	void relatorioVendasProduto(); 
+	void relatorioTotal();
 
 
 	
