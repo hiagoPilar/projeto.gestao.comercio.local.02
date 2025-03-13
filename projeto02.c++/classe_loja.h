@@ -52,7 +52,9 @@ public:
 	void excluirProduto();
 	
 	//venda
-	void efetuarVenda();  
+	bool selecionarProduto(int& idProdBsucar, int& qtdVenda);
+	void registrarVenda(int idProdBuscar, int qtdVenda); 
+	void efetuarVenda(); 
 
 	//relatório
 	void relatorioStock(); 
