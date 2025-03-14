@@ -67,7 +67,7 @@ char Loja::ehSimNao()
 	
 	while (true)
 	{  
-		cout << "Digite (S) para sim ou (N) para não: ";   
+		cout << "Digite (S) ou (N): ";   
 		cin >> opcao; 
 
 		//verifica se a entrada tem somente um caractere
@@ -410,7 +410,6 @@ void Loja::alterarNome()
 
 
 
-
 //produtos
 
 void Loja::stockInicial()
@@ -677,6 +676,7 @@ bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 	{
 		cout << "Digite o ID do produto que deseja registrar (ou 'sair' para voltar ao Menu Principal): ";
 		cin >> idProdBuscarStr;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		if (idProdBuscarStr == "sair") {
 			return false;
 		}
@@ -685,6 +685,7 @@ bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 			cout << "Digite um número válido para o ID do produto: ";
 			cin.clear();
 			cin >> idProdBuscarStr;
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');   
 		}
 		idProdBuscar = stoi(idProdBuscarStr);
 
@@ -694,52 +695,61 @@ bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 				prodEncontrado = true;
 
 				//verifica quantidade
-				cout << "---------------------------------" << endl;
-				cout << "Digite a quantidade do produto: ";
-				cin >> qtdVendaStr;
-				while (!ehNumero(qtdVendaStr)) {
-					cout << "Digite um número válido para quantidade: ";
-					cin.clear();
+				do
+				{
+					cout << "---------------------------------" << endl;
+					cout << "Digite a quantidade do produto: ";
 					cin >> qtdVendaStr;
-				}
-				qtdVenda = stoi(qtdVendaStr);
-				if (qtdVenda > vecProduto[i].getQuantidade()) {
-					cout << "-------------------------------------------------------" << endl;
-					cout << "Stock insuficiente! Stock atual do produto: " << vecProduto[i].getQuantidade() << endl;
-					cout << "-------------------------------------------------------" << endl;
-					break;
-				}
-				else {
-					return true;
-				}
-			}else {
-				cout << "Produto nao existe. Tente novamente..." << endl;
-				break;
+					cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+					while (!ehNumero(qtdVendaStr)) {
+						cout << "Digite um número válido para quantidade: ";
+						cin.clear();   
+						cin >> qtdVendaStr;
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');     
+					}
+					qtdVenda = stoi(qtdVendaStr);
+					if (qtdVenda > vecProduto[i].getQuantidade()) {
+						cout << "-------------------------------------------------------" << endl;
+						cout << "Stock insuficiente! Stock atual do produto: " << vecProduto[i].getQuantidade() << endl;
+						cout << "-------------------------------------------------------" << endl;
+					}
+					else {
+						return true;
+					}
+
+				} while (true);
 			}
+		}
+
+		if (!prodEncontrado) {
+			cout << endl; 
+			cout << "Produto nao existe. Tente novamente..." << endl;  
+			cout << endl; 
 		}
 		
 	} while (true);
 
-	return true;
+	return true; 
 }
 
-void Loja::registrarVenda(int idProdBuscar, int qtdVenda)
+void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao) 
 {
+	qtdVendaSessao = 0;
 	cout << "---------------------------------------------------" << endl;
-	cout << "Deseja registrar um novo cliente?" << endl; 
+	cout << "Deseja registrar um novo cliente? | ";
 	char resposta = ehSimNao();
 	if (resposta == 'S') {
 		criarCliente();
 	}
 	else if (resposta == 'N') {
-		
-		cout << "---------------------------------------------------" << endl;  
-		cout << "Deseja adicionar automaticamente o ID do cliente? ";
+
+		cout << "---------------------------------------------------" << endl;
+		cout << "Deseja adicionar automaticamente o ID do cliente? | ";
 		resposta = ehSimNao();
 		if (resposta == 'S') {
 			totalClientes++;
 			cout << "---------------------------------------------------" << endl;
-			cout << "Cliente com ID " << totalClientes << "adicionado a venda!" << endl;
+			cout << "Cliente com ID " << totalClientes << " adicionado a venda!" << endl;
 		}
 	}
 
@@ -748,61 +758,145 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda)
 	{
 		if (vecProduto[i].getIdProduto() == idProdBuscar) {
 
-			float iva = vecProduto[i].getPrecoFinal() * 0.23;  
-			
+			float precoFinal = vecProduto[i].getPrecoFinal() * qtdVenda;
+			float iva = precoFinal * 0.23;
+
+
 			cout << endl;
-			cout << "-------------------------------------------" << endl; 
+			cout << "-------------------------------------------" << endl;
 			cout << "Os dados estão corretos?" << endl;
-			cout << "ID Produto: " << idProdBuscar << " | Nome: " << vecProduto[i].getNome() << " | Quantidade: " << qtdVenda << " | Preço Unitário: " << vecProduto[i].getPreco() << " | Preço Final: " << vecProduto[i].getPrecoFinal() << " | IVA: " << iva << endl; 
+			cout << "ID Produto: " << idProdBuscar << " | Nome: " << vecProduto[i].getNome() << " | Quantidade: " << qtdVenda << " | Preço Unitário: " << fixed << setprecision(2) << vecProduto[i].getPrecoFinal() << " | Preço Final S/ IVA: " << fixed << setprecision(2) << precoFinal << " | IVA: " << fixed << setprecision(2) << iva << endl;
+			cout << "-------------------------------------------" << endl;
 			resposta = ehSimNao();
 			if (resposta == 'S') {
 
+
 				//atualiza qtd no stock
 				int qtdAtual = vecProduto[i].getQuantidade() - qtdVenda;
-				vecProduto[i].setQuantidade(qtdAtual); 
+				vecProduto[i].setQuantidade(qtdAtual);
 
 
+				//adiciona venda no vetor
 				if (totalVendas < 100) {
-					vecVenda[totalVendas] = Venda(numFatura, totalClientes, vecProduto[i].getIdProduto(), vecProduto[i].getNome(), vecProduto[i].getQuantidade(), vecProduto[i].getPreco(), vecProduto[i].getPrecoFinal(), iva); 
+					vecVenda[totalVendas] = Venda(numFatura, totalClientes, vecProduto[i].getIdProduto(), vecProduto[i].getNome(), vecProduto[i].getQuantidade(), vecProduto[i].getPreco(), vecProduto[i].getPrecoFinal(), iva);
+					totalVendas++;
+					qtdVendaSessao++;
+					cout << "............................." << endl;
+					cout << "Venda registrada com sucesso!" << endl;
+					cout << "............................." << endl;
 				}
+				else {
+					totalClientes--;
+					cout << "Limite de vendas atingido!" << endl;
+				}
+
+				
 
 			}
 			else if (resposta == 'N') {
 				totalClientes--;
-				selecionarProduto(idProdBuscar, qtdVenda);   
+				if (selecionarProduto(idProdBuscar, qtdVenda)) { 
+					registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao); 
+				} 
+				 
 			}
-			
+
+		}
+	} 
+
+	cout << "---------------------------------" << endl; 
+	cout << "Deseja registrar outro produto? ";
+	resposta = ehSimNao();  
+	if (resposta == 'S') {
+		if (selecionarProduto(idProdBuscar, qtdVenda)) { 
+			registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao); 
 		}
 	}
+	else if (resposta == 'N') {
+		cout << endl;
+		cout << "Carregando CHECKOUT..." << endl; 
+		cout << endl;
+		float total = 0.0;
+		calcularTotal(total, qtdVendaSessao); 
+	} 
+}
 
-	cout << "Deseja registrar outro produto? ";
-	resposta = ehSimNao();
-	if (resposta == 'S') {
-		selecionarProduto(idProdBuscar, qtdVenda);
+bool Loja::calcularTotal(float total, int qtdVendaSessao)      
+{
+	float pagoCliente, troco;
+	string pagoClienteStr;
+
+	if (qtdVendaSessao == 0) {
+		cout << "Nenhuma venda registrada!" << endl;
+		return false;
 	}
-	else {
+
+	system("cls");
+	cout << endl;
+	cout << "----------------------------------" << endl;
+	cout << "             CHECKOUT             " << endl;
+	cout << "----------------------------------" << endl;
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << endl;
+	cout << "          ITENS FATURADOS         " << endl;
+	cout << endl;
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	//mostra os itens que estao no carrinho para pagamento
+	for (int i = totalVendas - qtdVendaSessao; i < totalVendas; i++)
+	{
+		cout << "ID Produto: " << vecVenda[i].getIdProduto() << " | Nome: " << vecVenda[i].getNomeProduto() << " | Qauntidade: " << vecVenda[i].getQuantidade() << " | Valor: " << fixed << setprecision(2) << vecVenda[i].getPrecoTotal() << endl;
+		cout << "--------------------------------------------------------------------" << endl;
+		total = total + vecVenda[i].getPrecoTotal();
 
 	}
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << endl;
+	cout << "            PAGAMENTO             " << endl;
+	cout << endl;
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "Total da Compra C/ IVA: € " << fixed << setprecision(2) << total << endl;
+	cout << "----------------------------------" << endl;
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	//efetuar processo de pagamento
+	
+	return true;   
+
 }
 
 
-void Loja::efetuarVenda() {
+void Loja::efetuarVenda() { 
 
-	int idProdBuscar, qtdVenda;
+	int idProdBuscar, qtdVenda, qtdVendaSessao;   
+	float total = 0.0;
 
 	system("cls");
 	cout << "------------------------------" << endl; 
 	cout << "          VENDA               " << endl; 
 	cout << "------------------------------" << endl;
 
-	if (!selecionarProduto(idProdBuscar, qtdVenda)) {
+	if (!selecionarProduto(idProdBuscar, qtdVenda)) {  
 		cout << "Erro ao selecionar produto!" << endl;
 		return; 
 	}
 
-	registrarVenda(idProdBuscar, qtdVenda);
-	 
+	cout << "Iniciando registro da venda..." << endl; 
+	registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao);  
 
+	
+	if (qtdVendaSessao > 0) {
+		if (!calcularTotal(total, qtdVendaSessao)) {
+			cout << "Pagamento cancelado!" << endl;
+			return;
+		} 
+		
+	}
+	else { 
+		cout << "Nenhum produto registrado. Voltando ao menu." << endl; 
+		return;
+	}
+
+
+	cout << "Venda finalizada com sucesso!" << endl; 
 }
 
 
@@ -1302,11 +1396,6 @@ void Loja::relatorioTotal()
 
 
 
-
-//efetuarvenda é preciso corrigir a verificacao dos produtos registrados, ao inserir nao, ele continua para o checkout, onde deveria voltar para registrar novamente o produto
-
-//selecionar o produto e verificar stock
-//registrar a venda no vetor
 //calcular totais e iva
 //realizar sorteio 
 //processo de pagamento

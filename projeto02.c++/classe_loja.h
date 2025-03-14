@@ -53,9 +53,10 @@ public:
 	
 	//venda
 	bool selecionarProduto(int& idProdBsucar, int& qtdVenda);
-	void registrarVenda(int idProdBuscar, int qtdVenda); 
+	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao); 
+	bool calcularTotal(float total, int qtdVendaSessao);   
 	void efetuarVenda(); 
-
+	 
 	//relatório
 	void relatorioStock(); 
 	void relatorioVendasProduto(); 

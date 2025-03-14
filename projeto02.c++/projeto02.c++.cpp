@@ -122,7 +122,7 @@ void menuCLiente(Loja& loja) {
 	} while (sel4 != 4);
 }
 
-void menuPrincipal(Loja& loja) { 
+void menuPrincipal(Loja& loja) {  
 
 
 	int sel1;
@@ -144,7 +144,7 @@ void menuPrincipal(Loja& loja) {
 		switch (sel1)
 		{
 		case 1:
-			loja.efetuarVenda();     
+			loja.efetuarVenda();
 			break;
 		case 2:
 			menuStock(loja); 
