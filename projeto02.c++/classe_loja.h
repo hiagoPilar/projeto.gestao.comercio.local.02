@@ -9,7 +9,7 @@
 #include <ctime> //para data e hora 
 #include <algorithm> //para operacoes 
 #include <unordered_map> //para tabelas de hash
-#include <cstdlib> // para funcoes utilitarias (rand)
+#include <cstdlib> // para funcoes utilitarias (rand/sorteio)
 
 using namespace std; 
 
@@ -33,9 +33,10 @@ public:
 	string removerEspacosExtras(string str);   
 	void transformarParaMinusculo(string& str);  
 
+
 	//extras
-	void dataHora(); 
-	bool sorteio(); 
+	void dataHora();  
+
 
 	//cliente
 	void clientesIniciais();   
@@ -44,18 +45,23 @@ public:
 	void excluirCliente();
 	void alterarNome();
 
+
 	//produto
 	void stockInicial();
 	void mostrarStock();
 	void criarProduto();
 	void atualizarProduto(); 
 	void excluirProduto();
+
 	
 	//venda
 	bool selecionarProduto(int& idProdBsucar, int& qtdVenda);
-	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao); 
-	bool calcularTotal(float total, int qtdVendaSessao);   
-	void efetuarVenda(); 
+	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco); 
+	bool sorteio(); 
+	bool calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, float& pagoCliente, float& troco);        
+	void imprimirFatura(float total, float totalComIva, int qtdVendaSessao, float pagoCliente, float troco);
+	void efetuarVenda();  
+
 	 
 	//relatório
 	void relatorioStock(); 
