@@ -55,7 +55,7 @@ public:
 
 	
 	//venda
-	void vendasIniciais(); 
+	void vendasIniciais();
 	bool selecionarProduto(int& idProdBsucar, int& qtdVenda);
 	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco, int& idClienteRegistroCompra); 
 	bool sorteio(); 

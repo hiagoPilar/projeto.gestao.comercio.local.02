@@ -1,7 +1,7 @@
 ﻿#include "classe_loja.h"
 #include "classe_cliente.h"
 
-
+using namespace std; 
 
 
 Loja::Loja(int capacidade) 
@@ -12,7 +12,7 @@ Loja::Loja(int capacidade)
 	this->numFatura = 3; 
 	clientesIniciais(); 
 	stockInicial(); 
-	vendasIniciais(); 
+	vendasIniciais();
 }
   
 
@@ -658,10 +658,10 @@ void Loja::excluirProduto()
 
 void Loja::vendasIniciais()
 {
-	vecVenda[0] = Venda(1, 1, 1, "T-Shirt", 10, 10.40, 104.00, 23.92);
-	vecVenda[1] = Venda(1, 1, 2, "Bermuda", 15, 18.20, 210.00, 48.30);
-	vecVenda[2] = Venda(2, 2, 3, "Tênis", 5, 18.20, 225.00, 51.75); 
-	vecVenda[3] = Venda(2, 3, 4, "Hoodie", 2, 13.00, 26.00, 5.98); 
+	vecVenda[0] = Venda(1, 1, 1, "T-Shirt", 10, 10.40, 10 * 10.40, (10 * 10.40) * 0.23);
+	vecVenda[1] = Venda(1, 1, 2, "Bermuda", 15, 18.20, 15 * 18.20, (15 * 18.20) * 0.23);
+	vecVenda[2] = Venda(2, 2, 3, "Tênis", 5, 58.50, 5 * 58.50, (5 * 58.50) * 0.23);
+	vecVenda[3] = Venda(2, 3, 4, "Hoodie", 2, 16.90, 2 * 16.90, (2 * 16.90) * 0.23);
 }
 
 bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
@@ -806,7 +806,7 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 
 				//adiciona venda no vetor
 				if (totalVendas < 100) {
-					vecVenda[totalVendas] = Venda(numFatura, idClienteRegistroCompra, vecProduto[i].getIdProduto(), vecProduto[i].getNome(), qtdVenda, vecProduto[i].getPreco(), precoFinal, iva);   
+					vecVenda[totalVendas] = Venda(numFatura, idClienteRegistroCompra, vecProduto[i].getIdProduto(), vecProduto[i].getNome(), qtdVenda, vecProduto[i].getPreco(), precoFinal, iva);    
 					totalVendas++;
 					qtdVendaSessao++;
 					cout << "............................." << endl;
@@ -1052,288 +1052,6 @@ void Loja::efetuarVenda() {
 
 
 
-/*
-void Loja::efetuarVenda() 
-{
-	bool continuar = false, prodEncontrado = false; 
-	int qtdVenda, qtdStock, qtdAtual, idProdBuscar, totalVendasSessao = 0;      
-	string idprodbuscarStr, qtdvendaStr, opcao, nomeProduto;   
-	float iva;   
-
-	system("cls"); 
-	cout << "--------------------------------------------------------------------------------" << endl;
-	cout << "                              REGISTRO DE PRODUTOS                              " << endl;
-	cout << "--------------------------------------------------------------------------------" << endl;
-
-	 
-	do
-	{
-		
-		mostrarClientes(); 
-		mostrarStock();
-		cout << "--------------------------------------------------------------------------------" << endl;
-		cout << "Digite o ID do produto que deseja registrar (ou 'sair' para voltar ao Menu Principal): ";
-		cin >> idprodbuscarStr; 
-		//verificar
-		if (idprodbuscarStr == "sair") { 
-			return;
-		}
-		while (!ehNumero(idprodbuscarStr)) { 
-			cout << "----------------------------------" << endl;
-			cout << "Digite um número válido para o ID do produto: ";
-			cin.clear();
-			cin >> idprodbuscarStr;  
-		}
-
-		idProdBuscar = stoi(idprodbuscarStr);  
-
-		//buscar o produto
-		for (int i = 0; i < totalProdutos; i++)
-		{
-			if (vecProduto[i].getIdProduto() == idProdBuscar) {
-
-				prodEncontrado = true; 
-				qtdStock = vecProduto[i].getQuantidade();
-
-				//quantidade do produto
-				do
-				{
-					cout << endl;
-					cout << "--------------------------------" << endl;
-					cout << "Digite a quantidade do produto: ";
-					cin >> qtdvendaStr;
-					if (!ehNumero(qtdvendaStr)) {
-						cout << "Digite um número válido para a quantidade!";
-						continue; // essa validacao foi preciso fazer diferente e inserir continue, porque estava dando erro de entrada no buffer
-					}
-					qtdVenda = stoi(qtdvendaStr);
-					if (qtdVenda > qtdStock) {
-						cout << "Stock insuficiente! Stock atual do produto: " << qtdStock << endl;
-						continuar = false;
-
-					}
-					else {
-						continuar = true;
-					}
-
-				} while (!continuar);
-
-				/*
-				cout << "Deseja incluir um novo cliente?" << endl;
-				char resposta = ehSimNao();
-				if (resposta == 'S') {
-					criarCliente(); 
-					cout << "Cliente com ID " << totalClientes << " adicionado com sucesso!" << endl;
-					cout << "-------------------------------------------------------------------------" << endl; 
-				}
-				else if (resposta == 'N') {
-					cout << "Digite o ID do cliente para prosseguir: ";
-
-				}
-				 
-				continuar = false;   
-
-				float precoUnitario = vecProduto[i].getPrecoFinal(); 
-				float precoTotal = qtdVenda * precoUnitario;  
-				iva = precoTotal * 0.23;    
-				nomeProduto = vecProduto[i].getNome();   
-				
-
-				//verificando dados corretos
-				cout << endl;
-				cout << "-------------------------------------------------------------------------" << endl;
-				cout << "Os dados estão corretos? | Produto ID: " << idProdBuscar << " | Nome Produto: " << nomeProduto << " | Quantidade: " << qtdVenda << " | Preço Unitário: " << precoUnitario << " | Preço Total: " << precoTotal << " | IVA: " << iva << endl; 
-				cin.ignore();   
-				char resposta = ehSimNao();   
-
-				if (resposta == 'S') { 
-
-					//atualiza qtd no stock
-					qtdAtual = qtdStock - qtdVenda;
-					vecProduto[i].setQuantidade(qtdAtual);  
- 
-
-					//armazenar a venda no vetor
-					if (totalVendas < 100) {
-						    
-						vecVenda[totalVendas] = Venda(numFatura, totalClientes, idProdBuscar, nomeProduto, qtdVenda, precoUnitario, precoTotal, iva);  
-						totalVendas++; 
-						totalVendasSessao++; 
-						 
-					}
-					else {
-						totalClientes--; 
-						cout << "Erro! Limite de vendas atingido!" << endl;
-					} 
-				}
-				else if (resposta == 'N') {
-					totalClientes--;   
-					continuar = false;
-				}
-
-				cout << endl;
-				cout << "--------------------------------------" << endl;
-				cout << "Deseja registrar outro produto?" << endl;   
-				cin.ignore(); 
-				resposta = ehSimNao();
-
-				if (resposta == 'S' || resposta == 's') {
-					continuar = false;  
-				}
-				else if(resposta == 'N' || resposta == 'n') {    
-					continuar = true;  
-				}
-
-
-			}	 
-
-		}
-
-		system("cls"); 
-		if (!prodEncontrado) {
-			cout << endl;
-			cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-			cout << "ID não encontrado! Digite novamente..." << endl;
-			cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-		}
-
-
-	} while (!continuar);
-
-	float totCompra = 0.0, pagoCliente, troco, totIva = 0.0;
-	string pagoClienteStr;
-	continuar = false;
-	bool vendaSorteada = sorteio(); 
-
-	cout << endl;
-	cout << endl;
-	cout << "----------------------------------" << endl;
-	cout << "             CHECKOUT             " << endl;
-	cout << "----------------------------------" << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-
-	if (vendaSorteada) {
-		cout << "🎉🎊 PARABÉNS! Sua compra foi SORTEADA e é 100% GRATUITA! 🎊🎉" << endl; 
-		cout << "----------------------------------------------------------------" << endl;
-		totCompra = 0.0;
-		totIva = 0.0;
-		return;
-	}
-
-	cout << endl;
-	cout << "          ITENS FATURADOS         " << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	//mostra os itens que estao no carrinho para pagamento
-	for (int i = totalVendas - totalVendasSessao; i < totalVendas; i++)
-	{
-		cout << "ID Produto: " << vecVenda[i].getIdProduto() << " | Nome: " << vecVenda[i].getNomeProduto() << " | Quantidade " << vecVenda[i].getQuantidade() << " | Preço Unitário: " << vecVenda[i].getPreco() << " | Preço Total: " << vecVenda[i].getPrecoTotal() << endl;
-		cout << "---------------------------------------------------------------------" << endl;
-		totCompra = totCompra + vecVenda[i].getPrecoTotal();
-		totIva = totIva + vecVenda[i].getIva();
-	}
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	cout << "            PAGAMENTO             " << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	float totCompraComIva = totCompra + totIva;
-	cout << "Total da Compra C/ IVA: € " << fixed << setprecision(2) << totCompraComIva << endl;
-	cout << "----------------------------------" << endl;
-	cout << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	//efetuar processo de pagamento
-	do
-	{
-		cout << "Digite o valor pago pelo cliente: ";
-		cin >> pagoClienteStr;
-		if (!ehNumero(pagoClienteStr)) {
-			cout << "------------------------" << endl;
-			cout << "Digite um valor válido: " << endl;
-			cin >> pagoClienteStr;
-		}
-		pagoCliente = stof(pagoClienteStr);
-		//verifica se o valor pago pelo cliente é suficiente
-		if (pagoCliente >= totCompraComIva) {
-			troco = pagoCliente - totCompraComIva;
-			cout << "Troco: " << fixed << setprecision(2) << troco << endl;
-			cout << endl;
-			continuar = true;
-		}
-		else {
-			troco = totCompraComIva - pagoCliente;
-			cout << "Valor pago insuficiente, esta faltando: € " << fixed << setprecision(2) << troco << endl;
-			cout << endl;
-			continuar = false;
-		}
-
-
-	} while (!continuar);
-
-
-	//imrpimirfatura
-	system("cls");
-	cout << endl;
-	cout << endl;
-	dataHora(); 
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	cout << "               FATURA             " << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-
-	cout << "Número da Fatura: " << numFatura << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Número Cliente: " << totalClientes << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Quantidade de Produtos Registrados: " << totalVendas << endl;
-	cout << "----------------------------------" << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	cout << "          ITENS FATURADOS         " << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	for (int i = totalVendas - totalVendasSessao; i < totalVendas; i++) 
-	{
-		cout << "ID Produto: " << vecVenda[i].getIdProduto() << " | Nome: " << vecVenda[i].getNomeProduto() << " | Quantidade " << vecVenda[i].getQuantidade() << " | Preço Unitário: " << vecVenda[i].getPreco() << " | Preço Total: " << vecVenda[i].getPrecoTotal() << endl;
-		cout << "---------------------------------------------------------------------" << endl;
-	}
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << endl;
-	cout << "            PAGAMENTO             " << endl;
-	cout << endl;
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Total da Compra S/ IVA: € " << fixed << setprecision(2) << totCompra << endl;
-	cout << "----------------------------------" << endl;
-	cout << "IVA: € " << fixed << setprecision(2) << totIva << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Total da Compra C/ IVA: € " << fixed << setprecision(2) << totCompraComIva << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Valor entregue: € " << fixed << setprecision(2) << pagoCliente << endl;
-	cout << "----------------------------------" << endl;
-	cout << "Troco: € " << fixed << setprecision(2) << troco << endl;
-	cout << "__________________________________" << endl;
-	cout << endl;
-	cout << endl;
-
-	totalClientes++;
-	numFatura++;
-	cout << "Deseja imprimir a fatura?" << endl;
-	cin.ignore();
-	char resposta = ehSimNao(); 
-	if (resposta == 'S') {
-		return;
-	}
-
-
-} 
-*/ 
-
 
 
 
@@ -1448,7 +1166,6 @@ void Loja::relatorioTotal()
 	float lucroMaisVendido = 0.0;
 	int clienteMaiorGasto = -1;
 	float maiorGasto = 0.0;
-	float maiorLucro = 0.0;
 
 	for (int i = 0; i < totalVendas; i++)
 	{
@@ -1459,43 +1176,47 @@ void Loja::relatorioTotal()
 		float precoCompra = 0.0;
 
 		vendasPorProduto[idProduto] += qtdVendida;
-		valorPorCliente[idCliente] += precoTotal; 
+		valorPorCliente[idCliente] += precoTotal;
 
 		//achar preco compra produto
 		for (int j = 0; j < totalProdutos; j++)
 		{
 			if (vecProduto[j].getIdProduto() == idProduto) {
 				precoCompra = vecProduto[j].getPreco();
-				break; 
+				break;
 			}
 		}
 
 		//lucro na compra desse produto
-		float lucroProduto = (vecVenda[i].getPreco() - precoCompra) * qtdVendida;
-		lucroPorProduto[idProduto] += lucroProduto; 
+		float lucroProduto = vecVenda[i].getPrecoTotal() - (precoCompra * qtdVendida); 
+		lucroPorProduto[idProduto] += lucroProduto;
+	}
 
+	for (int i = 1; i <= vendasPorProduto.size(); i++)
+	{
 
 		//atualiza o produto mais vendido
-		if (vendasPorProduto[idProduto] > qtdMaisVendida) {
-			qtdMaisVendida = vendasPorProduto[idProduto];
-			produtoMaisVendido = idProduto;
-			lucroMaisVendido = lucroPorProduto[idProduto]; 
+		if (vendasPorProduto[i] > qtdMaisVendida) {
+			qtdMaisVendida = vendasPorProduto[i];
+			produtoMaisVendido = i;
+			lucroMaisVendido = lucroPorProduto[i];
+
 		}
 
 		//atualiza o produto menos vendido
-		if (vendasPorProduto[idProduto] < qtdMenosVendida) {
-			qtdMenosVendida = vendasPorProduto[idProduto];
-			produtoMenosVendido = idProduto;
+		if (vendasPorProduto[i] < qtdMenosVendida) {
+			qtdMenosVendida = vendasPorProduto[i];
+			produtoMenosVendido = i;
 		}
 
 		//atualiza cliente que mais comprou em valor
-		if (valorPorCliente[idCliente] > maiorGasto) {
-			maiorGasto = valorPorCliente[idCliente];
-			clienteMaiorGasto = idCliente;  
+		if (valorPorCliente[i] > maiorGasto) {
+			maiorGasto = valorPorCliente[i];
+			clienteMaiorGasto = i;
 		}
-		 
-
 	}
+
+	 
 
 	cout << endl;
 	cout << endl;
@@ -1510,16 +1231,10 @@ void Loja::relatorioTotal()
 	{
 		if (vecProduto[j].getIdProduto() == produtoMaisVendido) {
 			cout << vecProduto[j].getNome() << " (" << qtdMaisVendida << " unidades)" << endl;
-
-			cout << endl;
-			cout << "===================================================" << endl;
-			cout << "Lucro do produto mais vendido: EUR " << fixed << setprecision(2) << lucroMaisVendido << endl;
-			cout << "===================================================" << endl;
-			cout << endl;
-
 			break;
 		}
 	}
+
 	cout << endl;
 	cout << "===================================================" << endl;
 	cout << "Produto menos vendido: ";
@@ -1532,6 +1247,11 @@ void Loja::relatorioTotal()
 		}
 	}
 
+	cout << endl;
+	cout << "===================================================" << endl;
+	cout << "Lucro do produto mais vendido: EUR " << fixed << setprecision(2) << lucroMaisVendido << endl;
+	cout << "===================================================" << endl;
+	cout << endl;
 	
 
 	cout << "Cliente que mais comprou em valor: ";
