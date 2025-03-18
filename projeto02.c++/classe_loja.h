@@ -55,11 +55,12 @@ public:
 
 	
 	//venda
+	void vendasIniciais(); 
 	bool selecionarProduto(int& idProdBsucar, int& qtdVenda);
-	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco); 
+	void registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco, int& idClienteRegistroCompra); 
 	bool sorteio(); 
-	bool calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, float& pagoCliente, float& troco);        
-	void imprimirFatura(float total, float totalComIva, int qtdVendaSessao, float pagoCliente, float troco);
+	bool calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, float& pagoCliente, float& troco, int idClienteRegistroCompra);
+	void imprimirFatura(float total, float totalComIva, int qtdVendaSessao, float pagoCliente, float troco, int idClienteRegistroCompra);
 	void efetuarVenda();  
 
 	 

@@ -8,10 +8,11 @@ Loja::Loja(int capacidade)
 {
 	this->totalClientes = 4;      
 	this->totalProdutos = 0;
-	this->totalVendas = 0; 
-	this->numFatura = 1; 
+	this->totalVendas = 4; 
+	this->numFatura = 3; 
 	clientesIniciais(); 
 	stockInicial(); 
+	vendasIniciais(); 
 }
   
 
@@ -115,7 +116,6 @@ void Loja::dataHora()
 	cout << "Data: " << tempoLocal.tm_mday << "/" << tempoLocal.tm_mon + 1 << "/" << tempoLocal.tm_year + 1900 << " - Hora: " << tempoLocal.tm_hour << ":" << tempoLocal.tm_min << ":" << tempoLocal.tm_sec << endl;   
 
 }
-
 
 
 
@@ -651,11 +651,18 @@ void Loja::excluirProduto()
 
 	} while (true);
 }
- 
 
 
 
 //vendas
+
+void Loja::vendasIniciais()
+{
+	vecVenda[0] = Venda(1, 1, 1, "T-Shirt", 10, 10.40, 104.00, 23.92);
+	vecVenda[1] = Venda(1, 1, 2, "Bermuda", 15, 18.20, 210.00, 48.30);
+	vecVenda[2] = Venda(2, 2, 3, "Tênis", 5, 18.20, 225.00, 51.75); 
+	vecVenda[3] = Venda(2, 3, 4, "Hoodie", 2, 13.00, 26.00, 5.98); 
+}
 
 bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 	
@@ -729,9 +736,9 @@ bool Loja::selecionarProduto(int& idProdBuscar, int& qtdVenda) {
 	return true; 
 }
 
-void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco)
+void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, float total, float totalComIva, float pagoCliente, float troco, int& idClienteRegistroCompra)
 {
-	int idClienteRegistroCompra = -1;
+	idClienteRegistroCompra = -1; 
 	string idClienteRegistroCompraSTR; 
 	cout << "---------------------------------------------------" << endl;
 	cout << "Deseja registrar um novo cliente? | ";
@@ -815,7 +822,7 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 			}
 			else if (resposta == 'N') {
 				if (selecionarProduto(idProdBuscar, qtdVenda)) { 
-					registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco);   
+					registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco, idClienteRegistroCompra);     
 				} 
 				 
 			}
@@ -828,7 +835,7 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 	resposta = ehSimNao();  
 	if (resposta == 'S') {
 		if (selecionarProduto(idProdBuscar, qtdVenda)) { 
-			registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco); 
+			registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco, idClienteRegistroCompra);  
 		}
 	}
 	else if (resposta == 'N') {
@@ -836,7 +843,7 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 		cout << "Carregando CHECKOUT..." << endl; 
 		cout << endl;
 		total = 0.0; 
-		calcularTotal(total, totalComIva, qtdVendaSessao, pagoCliente, troco); 
+		calcularTotal(total, totalComIva, qtdVendaSessao, pagoCliente, troco, idClienteRegistroCompra); 
 	} 
 }
 
@@ -852,7 +859,7 @@ bool Loja::sorteio()
 	return (chanceSorteio == 0);  //Retorna verdadeiro se for sorteado  
 }
 
-bool Loja::calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, float& pagoCliente, float& troco)
+bool Loja::calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, float& pagoCliente, float& troco, int idClienteRegistroCompra) 
 {
 	string pagoClienteStr;
 	bool continuar = false; 
@@ -889,7 +896,7 @@ bool Loja::calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, f
 	cout << "Total da Compra C/ IVA: EUR " << fixed << setprecision(2) << totalComIva << endl; 
 	cout << "----------------------------------" << endl;
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');   
+	  
 
 	//sorteio
 	if (sorteio()) {  
@@ -907,15 +914,17 @@ bool Loja::calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, f
 		total = 0.0; 
 		totalComIva = 0.0; 
 		system("pause"); 
-		imprimirFatura(total, totalComIva, qtdVendaSessao, pagoCliente, troco); 
+		imprimirFatura(total, totalComIva, qtdVendaSessao, pagoCliente, troco, idClienteRegistroCompra);  
+		return -1; 
 	}
 	
-
+	   
 	//efetuar processo de pagamento
 	do
 	{
-		cout << "Digite o valor pago pelo cliente: EUR "; 
+		cout << "Digite o valor pago pelo cliente: EUR ";  
 		cin >> pagoClienteStr;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
 		if (!ehNumero(pagoClienteStr)) {
 			cout << "------------------------" << endl;
 			cout << "Digite um valor válido: EUR " << endl;
@@ -944,7 +953,7 @@ bool Loja::calcularTotal(float& total, float& totalComIva, int qtdVendaSessao, f
 
 }
 
-void Loja::imprimirFatura(float total, float totalComIva, int qtdVendaSessao, float pagoCliente, float troco)
+void Loja::imprimirFatura(float total, float totalComIva, int qtdVendaSessao, float pagoCliente, float troco, int idClienteRegistroCompra)
 {
 	
 
@@ -961,7 +970,7 @@ void Loja::imprimirFatura(float total, float totalComIva, int qtdVendaSessao, fl
 
 	cout << "Número da Fatura: " << numFatura << endl; 
 	cout << "----------------------------------" << endl; 
-	cout << "Número Cliente: " << totalClientes << endl; 
+	cout << "Número Cliente: " << idClienteRegistroCompra << endl;  
 	cout << "----------------------------------" << endl;
 	cout << "Total de Produtos: " << qtdVendaSessao << endl; 
 	cout << "----------------------------------" << endl;
@@ -1007,7 +1016,7 @@ void Loja::imprimirFatura(float total, float totalComIva, int qtdVendaSessao, fl
 
 void Loja::efetuarVenda() { 
 
-	int idProdBuscar, qtdVenda, qtdVendaSessao = 0;   
+	int idProdBuscar, qtdVenda, qtdVendaSessao = 0, idClienteRegistroCompra; 
 	float total = 0.0, totalComIva = 0.0, pagoCliente = 0.0, troco = 0.0;
 	
 
@@ -1022,17 +1031,17 @@ void Loja::efetuarVenda() {
 	}
 
 	cout << "Iniciando registro da venda..." << endl; 
-	registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco); 
+	registrarVenda(idProdBuscar, qtdVenda, qtdVendaSessao, total, totalComIva, pagoCliente, troco, idClienteRegistroCompra);
 
 	
 	if (qtdVendaSessao > 0) {
-		if (!calcularTotal(total, totalComIva, qtdVendaSessao, pagoCliente, troco)) { 
+		if (!calcularTotal(total, totalComIva, qtdVendaSessao, pagoCliente, troco, idClienteRegistroCompra)) {
 			cout << "Pagamento cancelado!" << endl;
 			return;
 		} 
 	}
 
-	imprimirFatura(total, totalComIva, qtdVendaSessao, pagoCliente, troco); 
+	imprimirFatura(total, totalComIva, qtdVendaSessao, pagoCliente, troco, idClienteRegistroCompra); 
 
 
 	
@@ -1040,7 +1049,6 @@ void Loja::efetuarVenda() {
 
 	cout << "Venda finalizada com sucesso!" << endl; 
 }
-
 
 
 
@@ -1433,12 +1441,14 @@ void Loja::relatorioTotal()
 
 	unordered_map<int, int> vendasPorProduto; //id produto -> quant vendida
 	unordered_map<int, float> valorPorCliente; //id cliente -> total gasto
+	unordered_map<int, float> lucroPorProduto; //id produto -> lucro total
 
 	int produtoMaisVendido = -1, produtoMenosVendido = -1;
 	int qtdMaisVendida = 0, qtdMenosVendida = INT_MAX;
 	float lucroMaisVendido = 0.0;
 	int clienteMaiorGasto = -1;
 	float maiorGasto = 0.0;
+	float maiorLucro = 0.0;
 
 	for (int i = 0; i < totalVendas; i++)
 	{
@@ -1462,12 +1472,14 @@ void Loja::relatorioTotal()
 
 		//lucro na compra desse produto
 		float lucroProduto = (vecVenda[i].getPreco() - precoCompra) * qtdVendida;
+		lucroPorProduto[idProduto] += lucroProduto; 
+
 
 		//atualiza o produto mais vendido
 		if (vendasPorProduto[idProduto] > qtdMaisVendida) {
 			qtdMaisVendida = vendasPorProduto[idProduto];
 			produtoMaisVendido = idProduto;
-			lucroMaisVendido = lucroProduto;
+			lucroMaisVendido = lucroPorProduto[idProduto]; 
 		}
 
 		//atualiza o produto menos vendido
@@ -1498,6 +1510,13 @@ void Loja::relatorioTotal()
 	{
 		if (vecProduto[j].getIdProduto() == produtoMaisVendido) {
 			cout << vecProduto[j].getNome() << " (" << qtdMaisVendida << " unidades)" << endl;
+
+			cout << endl;
+			cout << "===================================================" << endl;
+			cout << "Lucro do produto mais vendido: EUR " << fixed << setprecision(2) << lucroMaisVendido << endl;
+			cout << "===================================================" << endl;
+			cout << endl;
+
 			break;
 		}
 	}
@@ -1508,15 +1527,13 @@ void Loja::relatorioTotal()
 	{
 		if (vecProduto[j].getIdProduto() == produtoMenosVendido) {
 			cout << vecProduto[j].getNome() << " (" << qtdMenosVendida << " unidades)" << endl;
+
 			break;
 		}
 	}
 
-	cout << endl;
-	cout << "===================================================" << endl;
-	cout << "Lucro do produto mais vendido: EUR " << fixed << setprecision(2) << lucroMaisVendido << endl;
-	cout << "===================================================" << endl;
-	cout << endl;
+	
+
 	cout << "Cliente que mais comprou em valor: ";
 	for (int j = 0; j < totalClientes; j++)
 	{
