@@ -411,10 +411,10 @@ void Loja::alterarNome()
 
 void Loja::stockInicial()
 { 
-	vecProduto[0] = Produto(1, "T-Shirt", 150, 8.0, 10.40);
-	vecProduto[1] = Produto(2, "Bermuda", 100, 14.0, 18.20);
-	vecProduto[2] = Produto(3, "Tênis", 200, 45.0, 58.50);
-	vecProduto[3] = Produto(4, "Hoodie", 180, 13.0, 16.90); 
+	vecProduto[0] = Produto(1, "T-Shirt", 150, 8.00, 10.40);
+	vecProduto[1] = Produto(2, "Bermuda", 100, 14.00, 18.20);
+	vecProduto[2] = Produto(3, "Tênis", 200, 45.00, 58.50);
+	vecProduto[3] = Produto(4, "Hoodie", 180, 13.00, 16.90); 
 
 	totalProdutos = 4;
 
@@ -747,8 +747,9 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 		criarCliente();
 		for (int i = 0; i < totalClientes; i++)
 		{
+			
 			cout << "Cliente com ID " << vecCliente[totalClientes - 1].getIdCliente() << " adicionado com sucesso!" << endl;
-			idClienteRegistroCompra = vecCliente[totalClientes - 1].getIdCliente(); 
+			idClienteRegistroCompra = vecCliente[totalClientes - 1].getIdCliente(); //armazena o cliente para usar no talao
 		}
 	}
 	else if (resposta == 'N') {
@@ -788,7 +789,6 @@ void Loja::registrarVenda(int idProdBuscar, int qtdVenda, int& qtdVendaSessao, f
 			float precoFinal = vecProduto[i].getPrecoFinal() * qtdVenda;
 			float iva = precoFinal * 0.23;
 
-			
 
 			cout << endl;
 			cout << "-------------------------------------------" << endl;
@@ -982,7 +982,7 @@ void Loja::imprimirFatura(float total, float totalComIva, int qtdVendaSessao, fl
 	cout << endl;
 	for (int i = totalVendas - qtdVendaSessao; i < totalVendas; i++)  
 	{
-		cout << "ID Produto: " << vecVenda[i].getIdProduto() << " | Nome: " << vecVenda[i].getNomeProduto() << " | Quantidade " << vecVenda[i].getQuantidade() << " | Preço Unitário: EUR " << vecVenda[i].getPreco() << " | Preço Total S/ IVA: EUR " << vecVenda[i].getPrecoTotal() << endl;
+		cout << " ID Produto: " << vecVenda[i].getIdProduto() << " | Nome: " << vecVenda[i].getNomeProduto() << " | Quantidade " << vecVenda[i].getQuantidade() << " | Preço Unitário: EUR " << vecVenda[i].getPreco() << " | Preço Total S/ IVA: EUR " << vecVenda[i].getPrecoTotal() << endl;
 		cout << "-------------------------------------------------------------------------------------------------------" << endl;
 	}
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
